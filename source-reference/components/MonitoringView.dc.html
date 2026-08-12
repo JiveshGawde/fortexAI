@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="display: flex; flex-direction: column; gap: 26px; font-family: 'Inter', sans-serif; color: #e8ecf1;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+      <div style="font-size: 13px; color: #8b96a5;">Security insights, most important first</div>
+      <div style="width: 1px; height: 16px; background: #232b38;"></div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 12.5px; color: #5b6472;">Project</span>
+        <select onchange="{{ onProjectChange }}" value="{{ project }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #e8ecf1; padding: 7px 12px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer;">
+          <sc-for list="{{ projectOptions }}" as="proj" hint-placeholder-count="2"><option value="{{ proj }}">{{ proj }}</option></sc-for>
+        </select>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <input type="date" value="{{ customFrom }}" onchange="{{ onCustomFrom }}" style="background: #10151d; border: 1px solid #232b38; color: #cdd4dd; padding: 8px 10px; border-radius: 7px; font-size: 12.5px;"/>
+        <span style="color: #5b6472; font-size: 12px;">&ndash;</span>
+        <input type="date" value="{{ customTo }}" onchange="{{ onCustomTo }}" style="background: #10151d; border: 1px solid #232b38; color: #cdd4dd; padding: 8px 10px; border-radius: 7px; font-size: 12.5px;"/>
+      </div>
+      <div style="display: flex; background: #10151d; border: 1px solid #232b38; border-radius: 9px; padding: 3px; gap: 2px;">
+        <button onclick="{{ set24h }}" style="border: none; background: {{ bg24h }}; color: {{ color24h }}; padding: 7px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer;">24h</button>
+        <button onclick="{{ set7d }}" style="border: none; background: {{ bg7d }}; color: {{ color7d }}; padding: 7px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer;">7d</button>
+        <button onclick="{{ set30d }}" style="border: none; background: {{ bg30d }}; color: {{ color30d }}; padding: 7px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer;">30d</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 14px;">
+    <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+      <div onclick="{{ k.onClick }}" style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 20px; cursor: pointer; position: relative;" style-hover="border-color:#3a4658;background:#131920;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="font-size: 12.5px; color: #8b96a5; font-weight: 600; margin-bottom: 10px;">{{ k.label }}</div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5b6472" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+        <div style="font-size: 25px; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: {{ k.valueColor }}; letter-spacing: -0.01em;">{{ k.value }}</div>
+        <div style="font-size: 12px; color: #5b6472; margin-top: 6px;">{{ k.sub }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 18px;">
+    <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 24px; min-width: 0;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <div style="font-size: 15px; font-weight: 700;">Malicious Prompt Trend</div>
+        <div style="display: flex; gap: 16px; font-size: 12px; color: #8b96a5;">
+          <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: #4f7fff;"></span>Attempts</div>
+          <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: #ef4444;"></span>Blocked</div>
+        </div>
+      </div>
+      <div style="position: relative;">
+        <svg viewBox="0 0 640 200" style="width: 100%; height: 200px; display: block;" preserveAspectRatio="none" onmousemove="{{ onChartMove }}" onmouseleave="{{ onChartLeave }}">
+          <defs>
+            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4f7fff" stop-opacity="0.32"/>
+              <stop offset="100%" stop-color="#4f7fff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="4" y1="4" x2="636" y2="4" stroke="#1a212c" stroke-width="1"></line>
+          <line x1="4" y1="100" x2="636" y2="100" stroke="#1a212c" stroke-width="1"></line>
+          <line x1="4" y1="196" x2="636" y2="196" stroke="#1a212c" stroke-width="1"></line>
+          <text x="638" y="8" font-size="10" fill="#5b6472" text-anchor="end">{{ trend.maxLabel }}</text>
+          <text x="638" y="104" font-size="10" fill="#5b6472" text-anchor="end">{{ trend.midLabel }}</text>
+          <text x="638" y="194" font-size="10" fill="#5b6472" text-anchor="end">0</text>
+          <path d="{{ trend.attemptsArea }}" fill="url(#areaGrad)" stroke="none"></path>
+          <path d="{{ trend.attemptsPath }}" fill="none" stroke="#4f7fff" stroke-width="2.5"></path>
+          <path d="{{ trend.blockedPath }}" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 3"></path>
+          <sc-if value="{{ hasHover }}">
+            <line x1="{{ hoverX }}" y1="4" x2="{{ hoverX }}" y2="196" stroke="#3a4658" stroke-width="1" stroke-dasharray="3 3"></line>
+            <circle cx="{{ hoverX }}" cy="{{ hoverY }}" r="4" fill="#4f7fff" stroke="#0a0e14" stroke-width="2"></circle>
+            <circle cx="{{ hoverX }}" cy="{{ hoverYBlocked }}" r="4" fill="#ef4444" stroke="#0a0e14" stroke-width="2"></circle>
+          </sc-if>
+        </svg>
+        <sc-if value="{{ hasHover }}">
+          <div style="position: absolute; top: 6px; left: {{ tooltipLeft }}; background: #182029; border: 1px solid #2c3646; border-radius: 8px; padding: 9px 12px; font-size: 12px; pointer-events: none; box-shadow: 0 8px 20px rgba(0,0,0,0.4); white-space: nowrap;">
+            <div style="color: #cdd4dd; font-weight: 600; margin-bottom: 4px;">{{ hoverLabel }}</div>
+            <div style="color: #6d94ff;">Attempts: {{ hoverAttempts }}</div>
+            <div style="color: #ff8080;">Blocked: {{ hoverBlocked }}</div>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: #5b6472; margin-top: 6px;">
+        <sc-for list="{{ trend.labels }}" as="lbl" hint-placeholder-count="5"><span>{{ lbl }}</span></sc-for>
+      </div>
+    </div>
+
+    <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 24px; display: flex; flex-direction: column; align-items: center;">
+      <div style="font-size: 15px; font-weight: 700; align-self: flex-start; margin-bottom: 18px;">Blocked vs Passed</div>
+      <svg viewBox="0 0 140 140" width="150" height="150">
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#1c2430" stroke-width="16"></circle>
+        <circle cx="70" cy="70" r="54" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="{{ donut.dashArray }}" stroke-linecap="round" transform="rotate(-90 70 70)">
+          <title>{{ donut.blockedCount }} blocked/flagged ({{ donut.pctBlocked }}%)</title>
+        </circle>
+        <text x="70" y="65" text-anchor="middle" font-size="22" font-weight="800" fill="#e8ecf1" font-family="JetBrains Mono, monospace">{{ donut.pctBlocked }}%</text>
+        <text x="70" y="83" text-anchor="middle" font-size="10.5" fill="#8b96a5">blocked+flagged</text>
+      </svg>
+      <div style="display: flex; gap: 22px; margin-top: 16px; font-size: 12.5px;">
+        <div style="text-align: center; cursor: default;" title="{{ donut.blockedCount }} blocked or flagged"><div style="color: #ef4444; font-weight: 700; font-family: 'JetBrains Mono', monospace;">{{ donut.blockedCount }}</div><div style="color: #5b6472;">blocked</div></div>
+        <div style="text-align: center; cursor: default;" title="{{ donut.passedCount }} passed clean"><div style="color: #22c55e; font-weight: 700; font-family: 'JetBrains Mono', monospace;">{{ donut.passedCount }}</div><div style="color: #5b6472;">passed</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 24px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+      <div style="font-size: 15px; font-weight: 700;">Prompt Analysis</div>
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <input type="text" placeholder="Search sender or prompt text..." value="{{ filters.search }}" onchange="{{ onSearch }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #e8ecf1; padding: 9px 14px; border-radius: 8px; font-size: 13.5px; width: 240px;" style-focus="border-color:#4f7fff;outline:none;"/>
+        <button onclick="{{ onDownloadCsv }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #cdd4dd; padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;" style-hover="border-color:#4f7fff;color:#8fa9ff;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>CSV
+        </button>
+        <button onclick="{{ onDownloadExcel }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #cdd4dd; padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;" style-hover="border-color:#4f7fff;color:#8fa9ff;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Excel
+        </button>
+      </div>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; align-items: center;">
+      <select onchange="{{ onDateRange }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #cdd4dd; padding: 8px 12px; border-radius: 7px; font-size: 13px;">
+        <option value="all">All time</option><option value="24h">Last 24h</option><option value="7d">Last 7 days</option><option value="30d">Last 30 days</option>
+      </select>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <input type="date" value="{{ filters.dateFrom }}" onchange="{{ onDateFrom }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #cdd4dd; padding: 7px 10px; border-radius: 7px; font-size: 12.5px;"/>
+        <span style="color: #5b6472; font-size: 12px;">to</span>
+        <input type="date" value="{{ filters.dateTo }}" onchange="{{ onDateTo }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #cdd4dd; padding: 7px 10px; border-radius: 7px; font-size: 12.5px;"/>
+      </div>
+      <select onchange="{{ onVerdict }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #cdd4dd; padding: 8px 12px; border-radius: 7px; font-size: 13px;">
+        <option value="all">All verdicts</option><option value="Blocked">Blocked</option><option value="Flagged">Flagged</option><option value="Passed">Passed</option>
+      </select>
+      <select onchange="{{ onLayer }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #cdd4dd; padding: 8px 12px; border-radius: 7px; font-size: 13px;">
+        <option value="all">All detection layers</option>
+        <sc-for list="{{ layerOptions }}" as="l" hint-placeholder-count="5"><option value="{{ l }}">{{ l }}</option></sc-for>
+      </select>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 128px minmax(160px,1.4fr) 128px 96px 84px 28px; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #1f2733; font-size: 11.5px; font-weight: 700; color: #5b6472; text-transform: uppercase; letter-spacing: 0.04em;">
+      <div>Timestamp</div><div>Sender</div><div>Detection Layer</div>
+      <div onclick="{{ toggleSort }}" style="cursor: pointer; user-select: none;">Confidence {{ sortArrow }}</div>
+      <div>Verdict</div><div></div>
+    </div>
+
+    <sc-for list="{{ rows }}" as="row" hint-placeholder-count="8">
+      <div>
+        <div onclick="{{ row.onExpand }}" style="display: grid; grid-template-columns: 128px minmax(160px,1.4fr) 128px 96px 84px 28px; gap: 10px; padding: 13px 12px; border-bottom: 1px solid #1a212c; font-size: 13px; align-items: center; cursor: pointer;" style-hover="background:#141a23;">
+          <div style="color: #8b96a5; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ row.timeStr }}</div>
+          <div style="color: #cdd4dd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 10px;">{{ row.sender }}</div>
+          <div style="color: #8b96a5;">{{ row.layer }}</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 46px; height: 5px; border-radius: 3px; background: #1c2430; overflow: hidden;"><div style="height: 100%; width: {{ row.confidence }}%; background: {{ row.confColor }};"></div></div>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px;">{{ row.confidence }}</span>
+          </div>
+          <div><span style="padding: 4px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 700; background: {{ row.verdictBg }}; color: {{ row.verdictColor }};">{{ row.verdict }}</span></div>
+          <div style="color: #5b6472; text-align: center;">{{ row.expandArrow }}</div>
+        </div>
+        <sc-if value="{{ row.isExpanded }}">
+          <div style="background: #0d1219; border-bottom: 1px solid #1a212c; padding: 16px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;">
+            <div style="font-size: 13.5px; color: #cdd4dd; line-height: 1.6; font-family: 'JetBrains Mono', monospace; max-width: 700px;">"{{ row.preview }}"</div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+              <span style="font-size: 12px; color: #5b6472; margin-right: 4px;">Was this correct?</span>
+              <button onclick="{{ row.onUp }}" style="background: {{ row.upBg }}; border: 1px solid #232b38; color: {{ row.upColor }}; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 14px;">&#128077;</button>
+              <button onclick="{{ row.onDown }}" style="background: {{ row.downBg }}; border: 1px solid #232b38; color: {{ row.downColor }}; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 14px;">&#128078;</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+    <sc-if value="{{ noResults }}"><div style="padding: 40px; text-align: center; color: #5b6472; font-size: 14px;">No prompts match these filters.</div></sc-if>
+  </div>
+
+  <sc-if value="{{ hasDrilldown }}">
+    <div style="position: fixed; inset: 0; background: rgba(5,7,11,0.7); display: flex; align-items: center; justify-content: center; z-index: 300;" onclick="{{ closeDrilldown }}">
+      <div onclick="{{ stop }}" style="background: #10151d; border: 1px solid #232b38; border-radius: 16px; padding: 28px; width: 520px; max-width: 90vw; max-height: 80vh; overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.5);">
+        <div style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">{{ drillTitle }}</div>
+        <div style="font-size: 13px; color: #8b96a5; line-height: 1.6; margin-bottom: 20px;">{{ drillDesc }}</div>
+
+        <sc-if value="{{ drillIsTrend }}">
+          <svg viewBox="0 0 480 160" style="width: 100%; height: 160px;" preserveAspectRatio="none">
+            <path d="{{ trend.attemptsArea }}" fill="url(#areaGrad2)" stroke="none" transform="scale(0.75,0.8)"></path>
+            <defs><linearGradient id="areaGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4f7fff" stop-opacity="0.3"/><stop offset="100%" stop-color="#4f7fff" stop-opacity="0"/></linearGradient></defs>
+            <path d="{{ trend.attemptsPath }}" fill="none" stroke="#4f7fff" stroke-width="2" transform="scale(0.75,0.8)"></path>
+            <path d="{{ trend.blockedPath }}" fill="none" stroke="#ef4444" stroke-width="1.6" stroke-dasharray="4 3" transform="scale(0.75,0.8)"></path>
+          </svg>
+          <div style="font-size: 12px; color: #5b6472; margin-top: 6px;">Same window as the chart above &mdash; blue is total attempts, red is confirmed blocks.</div>
+        </sc-if>
+
+        <sc-if value="{{ drillHasRows }}">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{ drillRows }}" as="r" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 9px; padding: 12px 14px;">
+                <div>
+                  <div style="font-size: 13.5px; font-weight: 600; color: #cdd4dd;">{{ r.label }}</div>
+                  <sc-if value="{{ r.sub }}"><div style="font-size: 11.5px; color: #5b6472;">{{ r.sub }}</div></sc-if>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #8fa9ff;">{{ r.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;period&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { hoverIndex: null };
+
+  onChartMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const fracX = (e.clientX - rect.left) / rect.width;
+    const points = this.props.trend && this.props.trend.points || [];
+    if (!points.length) return;
+    const idx = Math.max(0, Math.min(points.length - 1, Math.round(fracX * (points.length - 1))));
+    this.setState({ hoverIndex: idx });
+  };
+  onChartLeave = () => this.setState({ hoverIndex: null });
+
+  download(rows, format) {
+    const header = ['Timestamp', 'Sender', 'Detection Layer', 'Confidence', 'Verdict', 'Prompt Preview'];
+    const escape = (v) => '"' + String(v).replace(/"/g, '""') + '"';
+    const lines = [header.map(escape).join(',')].concat(
+      rows.map(r => [r.timeStr, r.sender, r.layer, r.confidence, r.verdict, r.preview].map(escape).join(','))
+    );
+    const csv = lines.join('\n');
+    const mime = format === 'xls' ? 'application/vnd.ms-excel' : 'text/csv';
+    const blob = new Blob([csv], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prompt-analysis.' + format;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  renderVals() {
+    const p = this.props;
+    const period = p.period;
+    const per = (v) => ({ bg: !p.isCustomActive && period === v ? '#4f7fff' : 'transparent', color: !p.isCustomActive && period === v ? '#fff' : '#8b96a5' });
+    const p24 = per('24h'), p7 = per('7d'), p30 = per('30d');
+
+    const kpis = (p.kpis || []).map(k => ({
+      ...k,
+      valueColor: k.tone === 'danger' ? '#ef4444' : k.tone === 'warn' ? '#f59e0b' : k.tone === 'good' ? '#22c55e' : '#e8ecf1',
+      onClick: () => p.openDrilldown && p.openDrilldown(k.key),
+    }));
+
+    const verdictStyle = (v) => v === 'Blocked' ? { bg: 'rgba(239,68,68,0.14)', color: '#ef4444' } : v === 'Flagged' ? { bg: 'rgba(245,158,11,0.14)', color: '#f59e0b' } : { bg: 'rgba(34,197,94,0.14)', color: '#22c55e' };
+    const confColor = (c) => c > 70 ? '#ef4444' : c > 35 ? '#f59e0b' : '#22c55e';
+
+    const rows = (p.rows || []).map(row => {
+      const vs = verdictStyle(row.verdict);
+      const isExpanded = p.expandedId === row.id;
+      const fb = (p.feedback || {})[row.id];
+      return {
+        ...row,
+        verdictBg: vs.bg, verdictColor: vs.color, confColor: confColor(row.confidence),
+        isExpanded, expandArrow: isExpanded ? '\u25be' : '\u25b8',
+        onExpand: () => p.toggleExpand && p.toggleExpand(row.id),
+        onUp: (e) => { e.stopPropagation(); p.setFeedback && p.setFeedback(row.id, 'up'); },
+        onDown: (e) => { e.stopPropagation(); p.setFeedback && p.setFeedback(row.id, 'down'); },
+        upBg: fb === 'up' ? 'rgba(34,197,94,0.2)' : '#12171f', upColor: fb === 'up' ? '#22c55e' : '#8b96a5',
+        downBg: fb === 'down' ? 'rgba(239,68,68,0.2)' : '#12171f', downColor: fb === 'down' ? '#ef4444' : '#8b96a5',
+      };
+    });
+
+    const donut = p.donut;
+    const points = (p.trend && p.trend.points) || [];
+    const hi = this.state.hoverIndex;
+    const hasHover = hi !== null && points[hi];
+    const hoverPoint = hasHover ? points[hi] : null;
+    const chartPxWidth = 600;
+
+    return {
+      set24h: () => p.setPeriod && p.setPeriod('24h'), set7d: () => p.setPeriod && p.setPeriod('7d'), set30d: () => p.setPeriod && p.setPeriod('30d'),
+      bg24h: p24.bg, color24h: p24.color, bg7d: p7.bg, color7d: p7.color, bg30d: p30.bg, color30d: p30.color,
+      customFrom: p.customFrom || '', customTo: p.customTo || '',
+      onCustomFrom: (e) => p.setCustomFrom && p.setCustomFrom(e.target.value),
+      onCustomTo: (e) => p.setCustomTo && p.setCustomTo(e.target.value),
+      kpis,
+      trend: p.trend,
+      donut,
+      project: p.project, projectOptions: p.projectOptions || [],
+      onProjectChange: (e) => p.setProject && p.setProject(e.target.value),
+      onChartMove: this.onChartMove, onChartLeave: this.onChartLeave,
+      hasHover, hoverX: hoverPoint ? hoverPoint.x : 0, hoverY: hoverPoint ? hoverPoint.y : 0, hoverYBlocked: hoverPoint ? hoverPoint.yBlocked : 0,
+      hoverLabel: hoverPoint ? hoverPoint.label : '', hoverAttempts: hoverPoint ? hoverPoint.attemptVal : '', hoverBlocked: hoverPoint ? hoverPoint.blockedVal : '',
+      tooltipLeft: hoverPoint ? Math.min(78, Math.max(0, (hoverPoint.x / 640) * 100)) + '%' : '0%',
+      filters: p.filters || {},
+      onSearch: (e) => p.setFilter && p.setFilter('search', e.target.value),
+      onDateRange: (e) => p.setFilter && p.setFilter('dateRange', e.target.value),
+      onDateFrom: (e) => p.setFilter && p.setFilter('dateFrom', e.target.value),
+      onDateTo: (e) => p.setFilter && p.setFilter('dateTo', e.target.value),
+      onVerdict: (e) => p.setFilter && p.setFilter('verdict', e.target.value),
+      onLayer: (e) => p.setFilter && p.setFilter('layer', e.target.value),
+      layerOptions: p.layerOptions || [],
+      toggleSort: p.toggleSort, sortArrow: p.sortDir === 'desc' ? '\u2193' : '\u2191',
+      rows, noResults: rows.length === 0,
+      onDownloadCsv: () => this.download(rows, 'csv'),
+      onDownloadExcel: () => this.download(rows, 'xls'),
+      hasDrilldown: !!p.drilldownKpi, closeDrilldown: p.closeDrilldown, stop: (e) => e.stopPropagation(),
+      drillTitle: p.drilldownKpi && p.kpiDetails ? p.kpiDetails[p.drilldownKpi].title : '',
+      drillDesc: p.drilldownKpi && p.kpiDetails ? p.kpiDetails[p.drilldownKpi].desc : '',
+      drillIsTrend: p.drilldownKpi && p.kpiDetails ? p.kpiDetails[p.drilldownKpi].type === 'trend' : false,
+      drillHasRows: p.drilldownKpi && p.kpiDetails ? !!p.kpiDetails[p.drilldownKpi].rows : false,
+      drillRows: p.drilldownKpi && p.kpiDetails && p.kpiDetails[p.drilldownKpi].rows || [],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

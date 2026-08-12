@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="color: #e8ecf1; font-family: 'Inter', sans-serif;">
+
+  <sc-if value="{{ isDocs }}">
+    <div>
+      <div style="font-size: 13px; color: #8b96a5; margin-bottom: 24px; max-width: 560px; line-height: 1.6;">Everything you need to integrate and operate FortexAI in your own stack.</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 16px;">
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 22px;"><div style="font-weight: 700; font-size: 15px; margin-bottom: 8px;">Quickstart</div><div style="font-size: 13px; color: #8b96a5; line-height: 1.6;">Generate a key and screen your first prompt in under five minutes.</div></div>
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 22px;"><div style="font-weight: 700; font-size: 15px; margin-bottom: 8px;">API Reference</div><div style="font-size: 13px; color: #8b96a5; line-height: 1.6;">Full endpoint, request, and response schema documentation.</div></div>
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 22px;"><div style="font-weight: 700; font-size: 15px; margin-bottom: 8px;">SDKs</div><div style="font-size: 13px; color: #8b96a5; line-height: 1.6;">Official client libraries for Python, Node.js, and Go.</div></div>
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 22px;"><div style="font-weight: 700; font-size: 15px; margin-bottom: 8px;">Webhooks</div><div style="font-size: 13px; color: #8b96a5; line-height: 1.6;">Subscribe to block events and high-risk-user alerts in real time.</div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isUsage }}">
+    <div>
+      <div style="font-size: 13px; color: #8b96a5; margin-bottom: 24px; max-width: 560px; line-height: 1.6;">Track how much of your plan's monthly allowance has been used.</div>
+      <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 26px; margin-bottom: 18px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px;">
+          <div style="font-size: 15px; font-weight: 700;">Prompts screened this cycle</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #8b96a5;">512,300 / 1,000,000</div>
+        </div>
+        <div style="height: 10px; border-radius: 6px; background: #1c2430; overflow: hidden;"><div style="height: 100%; width: 51.2%; background: linear-gradient(90deg,#4f7fff,#6d94ff);"></div></div>
+        <div style="font-size: 12.5px; color: #5b6472; margin-top: 10px;">Resets in 6 days &middot; Pro plan</div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 16px;">
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 20px;"><div style="font-size: 12.5px; color: #8b96a5; margin-bottom: 8px;">Rate limit</div><div style="font-size: 21px; font-weight: 800; font-family: 'JetBrains Mono', monospace;">500 req/min</div></div>
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 20px;"><div style="font-size: 12.5px; color: #8b96a5; margin-bottom: 8px;">Active API keys</div><div style="font-size: 21px; font-weight: 800; font-family: 'JetBrains Mono', monospace;">2</div></div>
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 20px;"><div style="font-size: 12.5px; color: #8b96a5; margin-bottom: 8px;">Vector DB size</div><div style="font-size: 21px; font-weight: 800; font-family: 'JetBrains Mono', monospace;">2.4 GB</div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isBilling }}">
+    <div>
+      <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin-bottom: 18px;">
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 26px;">
+          <div style="font-size: 13px; color: #6d94ff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">Current plan</div>
+          <div style="font-size: 22px; font-weight: 800; margin-bottom: 6px;">Pro &mdash; $199/mo</div>
+          <div style="font-size: 13px; color: #8b96a5; margin-bottom: 20px;">1M prompts/mo, unlimited API keys, priority support.</div>
+          <button style="background: transparent; border: 1px solid #2c3646; color: #e8ecf1; padding: 10px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer;" style-hover="border-color:#4f7fff;">Change Plan</button>
+        </div>
+        <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 26px;">
+          <div style="font-size: 13px; color: #8b96a5; font-weight: 700; margin-bottom: 14px;">Payment method</div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px;"><span style="background: #182029; border-radius: 6px; padding: 6px 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">VISA</span> &middot;&middot;&middot;&middot; 4242</div>
+        </div>
+      </div>
+      <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); overflow: hidden;">
+        <div style="padding: 16px 22px; font-size: 15px; font-weight: 700; border-bottom: 1px solid #1f2733;">Invoices</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 90px; padding: 12px 22px; font-size: 11.5px; color: #5b6472; text-transform: uppercase; letter-spacing: 0.04em;"><div>Date</div><div>Amount</div><div>Status</div><div></div></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 90px; padding: 14px 22px; border-top: 1px solid #1a212c; font-size: 13.5px; align-items: center;"><div>Jul 1, 2026</div><div style="font-family: 'JetBrains Mono', monospace;">$199.00</div><div><span style="color:#22c55e; font-weight: 600;">Paid</span></div><div><a href="#">Download</a></div></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 90px; padding: 14px 22px; border-top: 1px solid #1a212c; font-size: 13.5px; align-items: center;"><div>Jun 1, 2026</div><div style="font-family: 'JetBrains Mono', monospace;">$199.00</div><div><span style="color:#22c55e; font-weight: 600;">Paid</span></div><div><a href="#">Download</a></div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isSettings }}">
+    <div style="max-width: 640px;">
+      <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 26px; margin-bottom: 18px;">
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 18px;">Account</div>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div><label style="display: block; font-size: 12.5px; color: #8b96a5; margin-bottom: 6px;">Name</label><input value="Raj Mehta" readonly="true" style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #e8ecf1; padding: 11px 14px; border-radius: 8px; font-size: 14px;"/></div>
+          <div><label style="display: block; font-size: 12.5px; color: #8b96a5; margin-bottom: 6px;">Email</label><input value="raj.mehta@acme.io" readonly="true" style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #e8ecf1; padding: 11px 14px; border-radius: 8px; font-size: 14px;"/></div>
+        </div>
+      </div>
+      <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 26px; margin-bottom: 18px;">
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 18px;">Notifications</div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div><div style="font-size: 14px; font-weight: 600;">Email alerts on blocked attacks</div><div style="font-size: 12.5px; color: #5b6472;">Real-time notification per high-confidence block</div></div>
+            <div onclick="{{ toggleEmail }}" style="width: 42px; height: 24px; border-radius: 12px; background: {{ emailBg }}; position: relative; cursor: pointer; flex-shrink: 0;"><div style="width: 18px; height: 18px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: {{ emailPos }}; transition: left .15s;"></div></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div><div style="font-size: 14px; font-weight: 600;">Weekly digest</div><div style="font-size: 12.5px; color: #5b6472;">Summary of trends and high-risk users</div></div>
+            <div onclick="{{ toggleDigest }}" style="width: 42px; height: 24px; border-radius: 12px; background: {{ digestBg }}; position: relative; cursor: pointer; flex-shrink: 0;"><div style="width: 18px; height: 18px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: {{ digestPos }}; transition: left .15s;"></div></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div><div style="font-size: 14px; font-weight: 600;">Slack alerts</div><div style="font-size: 12.5px; color: #5b6472;">Post blocks to a #security-alerts channel</div></div>
+            <div onclick="{{ toggleSlack }}" style="width: 42px; height: 24px; border-radius: 12px; background: {{ slackBg }}; position: relative; cursor: pointer; flex-shrink: 0;"><div style="width: 18px; height: 18px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: {{ slackPos }}; transition: left .15s;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div style="background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.3); border-radius: 14px; padding: 26px;">
+        <div style="font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 10px;">Danger zone</div>
+        <div style="font-size: 13px; color: #8b96a5; margin-bottom: 16px;">Permanently delete this workspace and all logged data.</div>
+        <button style="background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 10px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer;" style-hover="background:rgba(239,68,68,0.1);">Delete Workspace</button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;kind&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const ss = p.settingsState || { emailAlerts: true, weeklyDigest: true, slackAlerts: false };
+    const sw = (on) => ({ bg: on ? '#4f7fff' : '#232b38', pos: on ? '21px' : '3px' });
+    const e = sw(ss.emailAlerts), d = sw(ss.weeklyDigest), sl = sw(ss.slackAlerts);
+    return {
+      isDocs: p.kind === 'docs', isUsage: p.kind === 'usage', isBilling: p.kind === 'billing', isSettings: p.kind === 'settings',
+      emailBg: e.bg, emailPos: e.pos, digestBg: d.bg, digestPos: d.pos, slackBg: sl.bg, slackPos: sl.pos,
+      toggleEmail: () => p.toggleSetting && p.toggleSetting('emailAlerts'),
+      toggleDigest: () => p.toggleSetting && p.toggleSetting('weeklyDigest'),
+      toggleSlack: () => p.toggleSetting && p.toggleSetting('slackAlerts'),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

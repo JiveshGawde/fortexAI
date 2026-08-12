@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="display: flex; flex-direction: column; gap: 24px; color: #e8ecf1; font-family: 'Inter', sans-serif;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+    <div style="font-size: 13px; color: #8b96a5; max-width: 560px; line-height: 1.6;">Generate keys to authenticate your application against the FortexAI screening endpoint. Treat every key like a password.</div>
+    <button onclick="{{ openModal }}" style="background: #4f7fff; border: none; color: #fff; padding: 11px 20px; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap;" style-hover="background:#6d94ff;">+ Generate New Key</button>
+  </div>
+
+  <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); overflow-x: auto;">
+    <div style="display: grid; grid-template-columns: minmax(90px,0.7fr) minmax(150px,1.2fr) 100px 100px 100px 40px; gap: 10px; padding: 14px 20px; border-bottom: 1px solid #1f2733; font-size: 11.5px; font-weight: 700; color: #5b6472; text-transform: uppercase; letter-spacing: 0.04em; min-width: 780px;">
+      <div>Name</div><div>Key</div><div>Created</div><div>Last Used</div><div>Status</div><div></div>
+    </div>
+    <sc-for list="{{ keys }}" as="k" hint-placeholder-count="2">
+      <div style="display: grid; grid-template-columns: minmax(90px,0.7fr) minmax(150px,1.2fr) 100px 100px 100px 40px; gap: 10px; padding: 16px 20px; border-bottom: 1px solid #1a212c; font-size: 13.5px; align-items: center; min-width: 780px;">
+        <div style="font-weight: 600;">{{ k.name }}</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8b96a5; display: flex; align-items: center; gap: 10px;">
+          {{ k.masked }}
+          <button onclick="{{ k.onCopy }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #8fa9ff; font-size: 11px; padding: 3px 9px; border-radius: 6px; cursor: pointer; flex-shrink: 0;" style-hover="border-color:#4f7fff;">Copy</button>
+        </div>
+        <div style="color: #8b96a5; font-size: 12.5px;">{{ k.created }}</div>
+        <div style="color: #8b96a5; font-size: 12.5px;">{{ k.lastUsed }}</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div onclick="{{ k.onToggle }}" style="width: 38px; height: 22px; border-radius: 11px; background: {{ k.toggleBg }}; position: relative; cursor: pointer; flex-shrink: 0;"><div style="width: 16px; height: 16px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: {{ k.togglePos }}; transition: left .15s;"></div></div>
+          <span style="font-size: 12px; font-weight: 600; color: {{ k.statusColor }}; white-space: nowrap;">{{ k.status }}</span>
+        </div>
+        <div>
+          <button onclick="{{ k.onDelete }}" title="Delete key" style="background: transparent; border: 1px solid #2c3646; color: #ef4444; width: 30px; height: 30px; border-radius: 7px; cursor: pointer;" style-hover="border-color:#ef4444;background:rgba(239,68,68,0.08);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto;"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Quick integration</div>
+    <div style="font-size: 12.5px; color: #8b96a5; margin-bottom: 16px;">Same key, any environment &mdash; point the request at your active project's endpoint.</div>
+    <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 18px 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8; color: #a3adba; overflow-x: auto;">
+      <div style="color: #5b6472;"># screen a prompt before it reaches your model</div>
+      <div>curl https://api.fortexai.dev/v1/screen \</div>
+      <div>&nbsp;&nbsp;-H "Authorization: Bearer <span style="color:#8fa9ff;">ftx_live_...</span>" \</div>
+      <div>&nbsp;&nbsp;-d '{"prompt": "summarize this document"}'</div>
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(180deg, rgba(21,27,38,0.7), rgba(15,19,28,0.7)); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px rgba(0,0,0,0.25); padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; margin-bottom: 4px;">Integrating by environment</div>
+    <div style="font-size: 12.5px; color: #8b96a5; margin-bottom: 18px;">Use a separate key per environment so you can rotate or stop one without affecting the others.</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 14px;">
+      <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 18px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></span><div style="font-weight: 700; font-size: 14px;">Production</div></div>
+        <div style="font-size: 12.5px; color: #8b96a5; line-height: 1.6;">Use a <code style="color:#8fa9ff;">ftx_live_*</code> key. Enable full blocking &mdash; malicious prompts are stopped before they reach your model.</div>
+      </div>
+      <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 18px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span><div style="font-weight: 700; font-size: 14px;">Staging</div></div>
+        <div style="font-size: 12.5px; color: #8b96a5; line-height: 1.6;">Use a <code style="color:#8fa9ff;">ftx_test_*</code> key. Run in monitor-only mode to validate detection before promoting to production.</div>
+      </div>
+      <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 18px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #6d94ff;"></span><div style="font-weight: 700; font-size: 14px;">Local / CI</div></div>
+        <div style="font-size: 12.5px; color: #8b96a5; line-height: 1.6;">Point at a self-hosted FortexAI instance via Docker &mdash; no key rotation needed across test runs.</div>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showModal }}">
+    <div style="position: fixed; inset: 0; background: rgba(5,7,11,0.7); display: flex; align-items: center; justify-content: center; z-index: 200;" onclick="{{ closeModal }}">
+      <div onclick="{{ stop }}" style="background: #10151d; border: 1px solid #232b38; border-radius: 16px; padding: 28px; width: 440px; max-width: 90vw; box-shadow: 0 30px 80px rgba(0,0,0,0.5);">
+        <sc-if value="{{ hasNewKey }}">
+          <div style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">Key generated</div>
+          <div style="font-size: 13px; color: #8b96a5; margin-bottom: 18px;">Copy it now &mdash; you won't be able to see it again.</div>
+          <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 9px; padding: 13px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8fa9ff; word-break: break-all; margin-bottom: 16px;">{{ newKeyValue }}</div>
+          <div style="display: flex; gap: 10px;">
+            <button onclick="{{ onCopyNew }}" style="flex: 1; background: #4f7fff; border: none; color: #fff; padding: 11px; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer;" style-hover="background:#6d94ff;">Copy Key</button>
+            <button onclick="{{ closeModal }}" style="background: transparent; border: 1px solid #2c3646; color: #e8ecf1; padding: 11px 18px; border-radius: 9px; font-size: 14px; cursor: pointer;">Done</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noNewKey }}">
+          <div style="font-size: 17px; font-weight: 700; margin-bottom: 18px;">Generate new API key</div>
+          <label style="display: block; font-size: 13px; font-weight: 600; color: #b7c0cc; margin-bottom: 7px;">Key name</label>
+          <input type="text" placeholder="e.g. Production" value="{{ keyNameInput }}" onchange="{{ onNameChange }}" style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #e8ecf1; padding: 12px 14px; border-radius: 9px; font-size: 14.5px; margin-bottom: 20px;" style-focus="border-color:#4f7fff;outline:none;"/>
+          <div style="display: flex; gap: 10px;">
+            <button onclick="{{ onGenerate }}" style="flex: 1; background: #4f7fff; border: none; color: #fff; padding: 11px; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer;" style-hover="background:#6d94ff;">Generate</button>
+            <button onclick="{{ closeModal }}" style="background: transparent; border: 1px solid #2c3646; color: #e8ecf1; padding: 11px 18px; border-radius: 9px; font-size: 14px; cursor: pointer;">Cancel</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasConfirmDelete }}">
+    <div style="position: fixed; inset: 0; background: rgba(5,7,11,0.7); display: flex; align-items: center; justify-content: center; z-index: 210;" onclick="{{ cancelDelete }}">
+      <div onclick="{{ stop }}" style="background: #10151d; border: 1px solid #232b38; border-radius: 16px; padding: 28px; width: 400px; max-width: 90vw; box-shadow: 0 30px 80px rgba(0,0,0,0.5);">
+        <div style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">Delete this API key?</div>
+        <div style="font-size: 13.5px; color: #8b96a5; line-height: 1.6; margin-bottom: 22px;">Any application still using <b style="color:#e8ecf1;">{{ confirmKeyName }}</b> will immediately stop being able to authenticate. This can't be undone.</div>
+        <div style="display: flex; gap: 10px;">
+          <button onclick="{{ confirmDelete }}" style="flex: 1; background: #ef4444; border: none; color: #fff; padding: 11px; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer;" style-hover="background:#f56565;">Delete Key</button>
+          <button onclick="{{ cancelDelete }}" style="background: transparent; border: 1px solid #2c3646; color: #e8ecf1; padding: 11px 18px; border-radius: 9px; font-size: 14px; cursor: pointer;">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const keys = (p.apiKeys || []).map(k => {
+      const active = k.status === 'active';
+      return {
+        ...k,
+        masked: k.key.slice(0, 9) + '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022' + k.key.slice(-4),
+        statusColor: active ? '#22c55e' : '#8b96a5',
+        toggleBg: active ? '#4f7fff' : '#232b38',
+        togglePos: active ? '19px' : '3px',
+        status: active ? 'Active' : 'Stopped',
+        onCopy: () => p.copyKey && p.copyKey(k.key),
+        onToggle: () => p.toggleStatus && p.toggleStatus(k.id),
+        onDelete: () => p.askDelete && p.askDelete(k.id),
+      };
+    });
+    const nk = p.newlyGenerated;
+    const confirmKey = (p.apiKeys || []).find(k => k.id === p.confirmDeleteId);
+    return {
+      keys, showModal: p.showModal,
+      openModal: p.openModal, closeModal: p.closeModal, stop: (e) => e.stopPropagation(),
+      hasNewKey: !!nk, noNewKey: !nk,
+      newKeyValue: nk ? nk.key : '',
+      onCopyNew: () => nk && p.copyKey && p.copyKey(nk.key),
+      keyNameInput: p.keyNameInput || '', onNameChange: (e) => p.setKeyName && p.setKeyName(e.target.value),
+      onGenerate: p.generateKey,
+      hasConfirmDelete: !!p.confirmDeleteId, confirmKeyName: confirmKey ? confirmKey.name : '',
+      cancelDelete: p.cancelDelete, confirmDelete: p.confirmDelete,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
