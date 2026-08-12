@@ -14,11 +14,37 @@
       <div style="font-size: 13px; color: #8b96a5;">Security insights, most important first</div>
       <div style="width: 1px; height: 16px; background: #232b38;"></div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 12.5px; color: #5b6472;">Project</span>
-        <select onchange="{{ onProjectChange }}" value="{{ project }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #ced8e1; padding: 7px 12px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer;">
-          <sc-for list="{{ projectOptions }}" as="proj" hint-placeholder-count="2"><option value="{{ proj }}">{{ proj }}</option></sc-for>
-        </select>
-      </div>
+  <span style="font-size: 12.5px; color: #5b6472;">Project</span>
+
+  <select
+    onchange="{{ onProjectChange }}"
+    value="{{ project }}"
+    style="
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #fff;
+      padding: 7px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    "
+  >
+    <sc-for
+      list="{{ projectOptions }}"
+      as="proj"
+      hint-placeholder-count="2"
+    >
+      <option
+        value="{{ proj }}"
+        style="background: #000; color: #fff;"
+      >
+        {{ proj }}
+      </option>
+    </sc-for>
+  </select>
+</div>
     </div>
     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 6px;">
