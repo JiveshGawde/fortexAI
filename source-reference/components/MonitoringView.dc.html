@@ -15,9 +15,28 @@
       <div style="width: 1px; height: 16px; background: #232b38;"></div>
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 12.5px; color: #5b6472;">Project</span>
-        <select onchange="{{ onProjectChange }}" value="{{ project }}" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #e8ecf1; padding: 7px 12px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer;">
-          <sc-for list="{{ projectOptions }}" as="proj" hint-placeholder-count="2"><option value="{{ proj }}">{{ proj }}</option></sc-for>
-        </select>
+        <select
+  onchange="{{ onProjectChange }}"
+  value="{{ project }}"
+  style="background: rgba(255,255,255,0.03);
+         border: 1px solid rgba(255,255,255,0.09);
+         color: #e8ecf1;
+         padding: 7px 12px;
+         border-radius: 7px;
+         font-size: 13px;
+         font-weight: 600;
+         cursor: pointer;
+         outline: none;
+         min-width: 150px;"
+>
+  <sc-for
+    list="{{ projectOptions }}"
+    as="proj"
+    hint-placeholder-count="2"
+  >
+    <option value="{{ proj }}">{{ proj }}</option>
+  </sc-for>
+</select>
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
